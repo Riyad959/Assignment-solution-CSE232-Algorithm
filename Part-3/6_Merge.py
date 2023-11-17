@@ -29,4 +29,4 @@ def merge(arr):
 scan = input("enter array ").split()
 scan = [int(x) for x in scan]
 merge(scan)
-print(f"sorted array is {scan}")
+print(f"sorted arr is {scan}")
