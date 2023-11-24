@@ -1,18 +1,26 @@
-def knapsack(weights, values, capacity):
-    n = len(weights)
-    bag = [[0] * (capacity + 1) for _ in range(n + 1)]
+def knapsake(weight, value, cap):
+    n = len(weight)
+    bag = [[0 for _ in range(cap + 1)] for _ in range(n + 1)]
 
     for i in range(1, n + 1):
-        for w in range(1, capacity + 1):
-            current_weight, current_value = weights[i - 1], values[i - 1]
-            
-            without_current_item = bag[i - 1][w]
-            with_current_item = bag[i - 1][w - current_weight] + current_value if current_weight <= w else 0
-            bag[i][w] = max(with_current_item, without_current_item)
-    return bag[n][capacity]
+        for w in range(cap + 1):
+            if weight[i - 1] > w:
+                bag[i][w] = bag[i - 1][w]
+            else:bag[i][w] = max(bag[i - 1][w], value[i - 1] + bag[i - 1][w - weight[i - 1]])
 
-weights = [2, 1, 4, 3]
-values = [3, 1, 5, 6]
-capacity = 8
-max_value = knapsack(weights, values, capacity)
-print(f"maximum value can store {max_value}")
+    b_num = bag[n][cap]
+    knapsake_item = []
+    w = cap
+    for i in range(n, 0, -1):
+        if bag[i][w] != bag[i - 1][w]:
+            knapsake_item.append(i - 1)
+            w -= weight[i - 1]
+
+    return b_num, knapsake_item
+
+cap = 50
+weight = [10, 20, 30]
+value = [50, 120, 70]
+b_num, item = knapsake(weight, value, cap)
+print(f"max value {b_num}")
+print(f"item are {item}")
